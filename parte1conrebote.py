@@ -37,7 +37,7 @@ def get_acc(posiciones: np.ndarray):
     return acc  # np.ndarray de las mismas dimensiones que posiciones0
 
 
-def simulación(tiempos: int, posiciones0: np.ndarray, velocidades: np.ndarray, graficar: bool = True):
+def simulación(tiempos: int, posiciones0: np.ndarray, velocidades: np.ndarray, graficar: bool = True, scatter: bool = False):
     p = np.zeros((tiempos, posiciones0.shape[0], 2))
     v = np.zeros((tiempos, posiciones0.shape[0], 2))
     p[0] = posiciones0
@@ -63,6 +63,19 @@ def simulación(tiempos: int, posiciones0: np.ndarray, velocidades: np.ndarray, 
             pass
         pass
 
+    if scatter:
+        plt.title("Scatter X vs Y")
+        plt.xlim(0, L)
+        plt.ylim(0, L)
+        plt.xlabel("Eje x")
+        plt.ylabel("Eje y")
+        for i in range(posiciones0.shape[0]):
+            plt.plot(p[:, i, 0], p[:, i, 1], label=f"Particula {i+1}")
+            pass
+        plt.legend()
+        plt.show()
+        return
+
     if graficar:
         plt.subplot(1, 1, 1, projection="3d")
         plt.title("Grafico vs tiempo")
@@ -83,18 +96,17 @@ def pares():
     pos0 = np.array([[30, 25], [40, 25]], dtype="float64")
     vel0 = np.array([[0, 0], [0, 0]], dtype="float64")
 
-    simulación(10_000, pos0, vel0)
+    simulación(10_000, pos0, vel0, scatter=True)
     vel0 = np.array([[0, 0], [2, 0]], dtype="float64")
-    simulación(10_000, pos0, vel0)
+    simulación(10_000, pos0, vel0, scatter=True)
     vel0 = np.array([[0, 0], [-2, 0]], dtype="float64")
-    simulación(10_000, pos0, vel0)
+    simulación(10_000, pos0, vel0, scatter=True)
     vel0 = np.array([[0, 0], [-2, 2]], dtype="float64")
-    simulación(10_000, pos0, vel0)
+    simulación(10_000, pos0, vel0, scatter=True)
     pass
 
 
 def decenas():
-    np.random.seed(6365)
     n = 10
     pos0 = np.random.random((n, 2)) * L
     vel0 = np.random.random((n, 2)) * 4
@@ -119,4 +131,4 @@ def decenas():
     pass
 
 
-decenas()
+pares()
