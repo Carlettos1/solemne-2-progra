@@ -1,3 +1,4 @@
+import math
 import random as rnd
 
 import matplotlib.pyplot as plt
@@ -10,6 +11,12 @@ import numpy as np
 tiempos = np.array(range(1, 50 + 1))*100  # tiempos para empezar a medir
 k = 100  # numero de muestras
 N = 20_000  # pasos totales
+a = -2
+b = 2
+
+
+def p(x, σ=σ, μ=μ):
+    return 1/(math.sqrt(2*math.pi)*σ) * math.exp(-1/(2*σ**2) * (x-μ)**2)
 
 
 def browniano(n, μ, σ, x0=0, y0=0, z0=0):
@@ -18,12 +25,12 @@ def browniano(n, μ, σ, x0=0, y0=0, z0=0):
     z = [z0]
 
     for i in range(n):
-        dx = rnd.normalvariate(μ, σ)
-        dy = rnd.normalvariate(μ, σ)
-        dz = rnd.normalvariate(μ, σ)
-        x.append(x[i] + dx)
-        y.append(y[i] + dy)
-        z.append(z[i] + dz)
+        dx = a + rnd.random()*(b-a)
+        dy = a + rnd.random()*(b-a)
+        dz = a + rnd.random()*(b-a)
+        x.append(x[i] + (dx if rnd.random()/math.sqrt(2*math.pi) < p(dx) else -dx))
+        y.append(y[i] + (dy if rnd.random()/math.sqrt(2*math.pi) < p(dy) else -dy))
+        z.append(z[i] + (dz if rnd.random()/math.sqrt(2*math.pi) < p(dz) else -dz))
         pass
     return x, y, z
 
